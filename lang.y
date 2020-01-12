@@ -62,6 +62,8 @@ EXPR: NUMBER { $$ = new NumberNode($1); };
     | EXPR '<' EXPR         { $$ = new LessNode($1, $3); }
     | EXPR '>' EXPR         { $$ = new GreaterNode($1, $3); }
     | '(' EXPR ')'          { $$ = $2; }
+    | ID '=' EXPR           { $$ = new AssignmentNode($1, $3); }
+    | ID                    { $$ = new VariableNode($1); }
     ;
 
 
