@@ -71,6 +71,21 @@ struct FunctionCallNode : public ExpressionNode {
       : function_name{std::move(function_name)},
         argument_values{std::move(argument_values)} {}
   int evaluate(Environment& env) override {
+    if ( env.functions().find(function_name) == env.functions().end() ) {
+      //  not found
+      return printf("> function does not exist\n"), 0;
+    } else {
+      // found
+      auto f = env.functions()[function_name];
+      if(argument_values.size()!=f->argument_names.size()) return printf("> function arguments count missmatch\n"), 0;
+      auto fenv = new Environment;
+      for(int i=0; i<argument_values.size(); ++i) {
+        fenv->variables()[f->argument_names[i]] = argument_values[i]->evaluate(env);
+      }
+      for(auto expr : f->body) expr->evaluate(*fenv);
+
+      delete f;
+    }
     return 0;
   }
 

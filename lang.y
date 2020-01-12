@@ -53,7 +53,12 @@ STMT: EXPR ';'                               { $$ = $1; }
     | IF '(' EXPR ')' STMT                   { $$ = new IfNode($3, $5); }
     | IF '(' EXPR ')' STMT ELSE STMT         { $$ = new IfElseNode($3, $5, $7); }
     | WHILE '(' EXPR ')' '{' STMT_LIST '}'   { $$ = new WhileNode($3, *$6); }
+    | ID '(' ID_LIST ')' '{' STMT_LIST '}'   { $$ = new FunctionDefinitionNode($1, *$3, *$6); }
     ;
+
+ID_LIST: ID_LIST ',' ID   { $$ = $1; $$->push_back($3); }
+       | ID               { $$ = new std::vector<std::string>(); $$->push_back($1); }
+       ;
 
 EXPR: NUMBER { $$ = new NumberNode($1); };
     | EXPR '+' EXPR         { $$ = new PlusNode($1, $3); }
@@ -67,6 +72,7 @@ EXPR: NUMBER { $$ = new NumberNode($1); };
     | '(' EXPR ')'          { $$ = $2; }
     | ID '=' EXPR           { $$ = new AssignmentNode($1, $3); }
     | ID                    { $$ = new VariableNode($1); }
+    | ID '(' EXPR_LIST ')'   { $$ = new FunctionCallNode($1, *$3); }
     ;
 
 
@@ -75,9 +81,6 @@ STMT_LIST: ';'                { $$ = $$; }
          | /*epsilon*/        { $$ = new std::vector<ExpressionNode*>(); }
          ;
 
-ID_LIST: ID_LIST ',' ID   { $$ = $1; $$->push_back($3); }
-       | ID               { $$ = new std::vector<std::string>(); $$->push_back($1); }
-       ;
 
 EXPR_LIST: EXPR_LIST ',' EXPR   { $$ = $1; $$->push_back($3); }
        | EXPR               { $$ = new std::vector<ExpressionNode*>(); $$->push_back($1); }
