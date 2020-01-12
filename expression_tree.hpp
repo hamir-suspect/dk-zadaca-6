@@ -78,6 +78,7 @@ struct FunctionCallNode : public ExpressionNode {
   std::vector<ExpressionNode*> argument_values;
 };
 
+// ARITHMETIC OPERATORS
 struct PlusNode : public ExpressionNode {
   PlusNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
   int evaluate(Environment& env) override {
@@ -100,6 +101,75 @@ struct MinusNode : public ExpressionNode {
   ExpressionNode* right = nullptr;
 };
 
+
+struct MultiplyNode : public ExpressionNode {
+  MultiplyNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) * right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+struct DivideNode : public ExpressionNode {
+  DivideNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) / right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+// LOGICAL OPERATORS
+struct EqualNode : public ExpressionNode {
+  EqualNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) == right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+struct NotEqualNode : public ExpressionNode {
+  NotEqualNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) != right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+struct LessNode : public ExpressionNode {
+  LessNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) < right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+struct GreaterNode : public ExpressionNode {
+  GreaterNode(ExpressionNode* lhs, ExpressionNode* rhs) : left{lhs}, right{rhs} {}
+  int evaluate(Environment& env) override {
+    return left->evaluate(env) > right->evaluate(env);
+  }
+
+  private:
+  ExpressionNode* left = nullptr;
+  ExpressionNode* right = nullptr;
+};
+
+// ******************************************************************************* //
 struct AssignmentNode : public ExpressionNode {
   AssignmentNode(const char* id, ExpressionNode* rhs) : id{id}, right{rhs} {}
 

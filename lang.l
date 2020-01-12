@@ -6,7 +6,7 @@
 
 #include "y.tab.h"
 
-#if 0
+#if 1
 #define DBG(X) (void)fprintf(stderr,"<" X ">\n")
 #else
 #define DBG(X) 
@@ -29,8 +29,10 @@ id         {letter}({letter}|{number})*
 "while"      { return WHILE; }
 "print"      { return PRINT; }
 {id}         { DBG("ID"); yylval.str = strclone(yytext); return ID; } 
+"=="         { DBG("EQ"); return EQ; }
+"!="         { DBG("NEQ"); return NEQ; }
 [\n]         { DBG("NL"); return *yytext; }
-[,;{}=+*/()-]     { DBG("OP"); return *yytext; }
+[,;{}=+*/()-<>]     { DBG("OP"); return *yytext; }
 
 
 %%

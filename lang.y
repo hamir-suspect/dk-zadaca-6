@@ -25,8 +25,12 @@ void yyerror(Environment& env, const char* s);
 %token WHILE
 %token PRINT
 %token<str> ID
+%token EQ
+%token NEQ
 
 %right '='
+%left EQ NEQ 
+%left '<' '>'
 %left '+' '-'
 %left '*' '/'
 
@@ -45,12 +49,18 @@ START: /* epsilon */
      ;
 
 STMT: EXPR ';'                               { $$ = $1; }
-    | PRINT EXPR ';'                         { $$ = new PrintNode($2); };
+    | PRINT EXPR ';'                         { $$ = new PrintNode($2); }
     ;
 
 EXPR: NUMBER { $$ = new NumberNode($1); };
     | EXPR '+' EXPR         { $$ = new PlusNode($1, $3); }
     | EXPR '-' EXPR         { $$ = new MinusNode($1, $3); }
+    | EXPR '*' EXPR         { $$ = new MultiplyNode($1, $3); }
+    | EXPR '/' EXPR         { $$ = new DivideNode($1, $3); }
+    | EXPR EQ EXPR          { $$ = new EqualNode($1, $3); }
+    | EXPR NEQ EXPR         { $$ = new NotEqualNode($1, $3); }
+    | EXPR '<' EXPR         { $$ = new LessNode($1, $3); }
+    | EXPR '>' EXPR         { $$ = new GreaterNode($1, $3); }
     | '(' EXPR ')'          { $$ = $2; }
     ;
 
