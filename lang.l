@@ -6,7 +6,7 @@
 
 #include "y.tab.h"
 
-#if 1
+#if 0
 #define DBG(X) (void)fprintf(stderr,"<" X ">\n")
 #else
 #define DBG(X) 
