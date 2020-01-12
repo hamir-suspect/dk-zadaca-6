@@ -196,6 +196,21 @@ struct IfNode : public ExpressionNode {
   ExpressionNode* body = nullptr;
 };
 
+struct IfElseNode : public ExpressionNode {
+  IfElseNode(ExpressionNode* cond, ExpressionNode* body, ExpressionNode* elseBody)
+      : condition{cond}, body{body}, elseBody{elseBody} {}
+  int evaluate(Environment& env) override {
+    if (condition->evaluate(env)) return body->evaluate(env);
+    else return elseBody->evaluate(env);
+    return 0;
+  }
+
+  private:
+  ExpressionNode* condition = nullptr;
+  ExpressionNode* body = nullptr;
+  ExpressionNode* elseBody = nullptr;
+};
+
 struct PrintNode : public ExpressionNode {
   PrintNode(ExpressionNode* value) : value{value} {}
 

@@ -50,6 +50,8 @@ START: /* epsilon */
 
 STMT: EXPR ';'                               { $$ = $1; }
     | PRINT EXPR ';'                         { $$ = new PrintNode($2); }
+    | IF '(' EXPR ')' STMT                   { $$ = new IfNode($3, $5); }
+    | IF '(' EXPR ')' STMT ELSE STMT         { $$ = new IfElseNode($3, $5, $7); }
     ;
 
 EXPR: NUMBER { $$ = new NumberNode($1); };
