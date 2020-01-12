@@ -52,6 +52,7 @@ STMT: EXPR ';'                               { $$ = $1; }
     | PRINT EXPR ';'                         { $$ = new PrintNode($2); }
     | IF '(' EXPR ')' STMT                   { $$ = new IfNode($3, $5); }
     | IF '(' EXPR ')' STMT ELSE STMT         { $$ = new IfElseNode($3, $5, $7); }
+    | WHILE '(' EXPR ')' '{' STMT_LIST '}'   { $$ = new WhileNode($3, *$6); }
     ;
 
 EXPR: NUMBER { $$ = new NumberNode($1); };

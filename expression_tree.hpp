@@ -226,6 +226,9 @@ struct WhileNode : public ExpressionNode {
   WhileNode(ExpressionNode* cond, std::vector<ExpressionNode*> body)
       : condition{cond}, body{body} {}
   int evaluate(Environment& env) override {
+    while(condition->evaluate(env)){
+      for(auto exp : body) exp->evaluate(env);
+    }
     return 0;
   }
 
